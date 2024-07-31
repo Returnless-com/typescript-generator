@@ -29,9 +29,12 @@ final class GenerateTypescriptTypesCommand extends Command
      */
     public function handle(): int
     {
+        /** @var string $outputPath */
+        $outputPath = config('typescript-generator.output_path');
+
         $typescriptGenerator = new TypescriptGenerator(
             new Psr4AttributeIterator,
-            resource_path('ts/app/Pages'),
+            $outputPath,
         );
 
         foreach ($typescriptGenerator->generate() as $file) {
