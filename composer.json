@@ -1,0 +1,44 @@
+{
+    "name": "returnless/typescript-generator",
+    "description": "A package to generate typescript types for your Laravel resources",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Returnless",
+            "email": "info@returnless.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Returnless\\TypescriptGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "Returnless\\TypescriptGenerator\\Tests\\" : "tests"
+        }
+    },
+    "require": {
+        "php": "^8.3",
+        "illuminate/console": "^8.83|^9.30|^10.0|^11.0",
+        "phpdocumentor/type-resolver": "^1.8",
+        "spatie/invade": "^2.1"
+    },
+    "require-dev": {
+        "larastan/larastan": "^2.9",
+        "laravel/pint": "^1.17",
+        "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+        "phpunit/phpunit": "^9.0|^10.0|^11.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "scripts" : {
+        "test" : "vendor/bin/phpunit"
+    }
+}
