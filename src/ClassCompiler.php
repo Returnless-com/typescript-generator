@@ -53,7 +53,7 @@ final class ClassCompiler
         ]);
 
         if ($reflectionClass->isEnum()) {
-            /** @var class-string<\UnitEnum|\BackedEnum> $enumClassName */
+            /** @var class-string<\UnitEnum> $enumClassName */
             $enumClassName = $className;
 
             return (new EnumTypeTranspiler($enumClassName))->transpile();

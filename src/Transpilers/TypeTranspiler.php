@@ -26,6 +26,9 @@ final class TypeTranspiler
 {
     private const string TYPE_UNKNOWN = 'unknown';
 
+    /**
+     * @throws \ReflectionException
+     */
     public function transpile(Type $type): string
     {
         $result = match (true) {
@@ -44,6 +47,9 @@ final class TypeTranspiler
         return $result ?? self::TYPE_UNKNOWN;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveArrayType(Array_ $type): string
     {
         $typeInspector = new TypeInspector($type);
@@ -59,6 +65,9 @@ final class TypeTranspiler
         return $this->arrayOf(self::TYPE_UNKNOWN);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveRecordType(AbstractList $type): string
     {
         return sprintf(
@@ -68,6 +77,9 @@ final class TypeTranspiler
         );
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveArrayShapeType(ArrayShape $type): string
     {
         $arrayShapeItems = array_map(
@@ -78,6 +90,9 @@ final class TypeTranspiler
         return sprintf('{ %s }', implode(', ', $arrayShapeItems));
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveObjectType(Object_ $type): string
     {
         $fullyQualifiedStructuralElementName = $type->getFqsen();
@@ -91,6 +106,9 @@ final class TypeTranspiler
         return $this->resolveFullyQualifiedStructuralElement($fullyQualifiedStructuralElementName);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveFullyQualifiedStructuralElement(Fqsen $fullyQualifiedStructuralElement): string
     {
         /** @var class-string $fullyQualifiedStructuralElementName */
@@ -103,6 +121,9 @@ final class TypeTranspiler
         return $fullyQualifiedStructuralElement->getName();
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveCollectionType(Collection $type): string
     {
         $valueType = $type->getValueType();
@@ -114,6 +135,9 @@ final class TypeTranspiler
         return $this->arrayOf($this->resolveObjectType($valueType));
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function resolveCompoundType(Compound $type): string
     {
         $transformed = array_map(

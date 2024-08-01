@@ -6,16 +6,20 @@ namespace Returnless\TypescriptGenerator\Transpilers;
 
 use ReflectionEnum;
 use ReflectionEnumBackedCase;
+use ReflectionEnumUnitCase;
 
-class EnumTypeTranspiler
+readonly class EnumTypeTranspiler
 {
     /**
-     * @param  class-string<\BackedEnum|\UnitEnum>  $className
+     * @param  class-string<\UnitEnum>  $className
      */
     public function __construct(
-        private readonly string $className,
+        private string $className,
     ) {}
 
+    /**
+     * @throws \ReflectionException
+     */
     public function transpile(): string
     {
         $reflectionEnum = new ReflectionEnum($this->className);
@@ -56,6 +60,11 @@ class EnumTypeTranspiler
      */
     private function transpileUnitEnum(ReflectionEnum $reflectionEnum): array
     {
-        return $reflectionEnum->getCases();
+        return array_map(
+            static function (ReflectionEnumUnitCase $reflectionEnumUnitCase): string {
+                return $reflectionEnumUnitCase->getName();
+            },
+            $reflectionEnum->getCases(),
+        );
     }
 }
