@@ -6,7 +6,6 @@ namespace Returnless\TypescriptGenerator;
 
 use Generator;
 use Illuminate\Support\Facades\File;
-use Returnless\TypescriptGenerator\Compilers\TypeCompiler;
 use Returnless\TypescriptGenerator\Iterators\AbstractAttributeIterator;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
 
@@ -24,7 +23,7 @@ final readonly class TypescriptGenerator
      */
     public function generate(): Generator
     {
-        $classCompiler = new TypeCompiler;
+        $classCompiler = new ClassCompiler;
 
         foreach ($this->attributeIterator as $typescriptAttribute) {
             $this->writeStackToFile($typescriptAttribute, $classCompiler->compile($typescriptAttribute));

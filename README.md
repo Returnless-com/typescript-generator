@@ -43,7 +43,7 @@ php artisan typescript:generate
 ### Running the compiler directly
 
 ```php
-$typeCompiler = new Returnless\TypescriptGenerator\TypeCompiler();
+$classCompiler = new \Returnless\TypescriptGenerator\ClassCompiler();
 
-$typeCompiler->compile('...class-string...');
+$output = $classCompiler->compile('...class-string...');
 ```

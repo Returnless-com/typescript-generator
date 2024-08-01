@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Returnless\TypescriptGenerator\Compilers;
+namespace Returnless\TypescriptGenerator;
 
 use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\Type;
 use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
-use Returnless\TypescriptGenerator\Stack;
 use Returnless\TypescriptGenerator\Transpilers\TypeTranspiler;
 
-final class TypeCompiler
+final class ClassCompiler
 {
     /**
      * @param  class-string  $className
