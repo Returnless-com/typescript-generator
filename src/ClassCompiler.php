@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\Type;
 use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
+use Returnless\TypescriptGenerator\Transpilers\EnumTypeTranspiler;
 use Returnless\TypescriptGenerator\Transpilers\TypeTranspiler;
 
 final class ClassCompiler
@@ -52,19 +53,13 @@ final class ClassCompiler
         ]);
 
         if ($reflectionClass->isEnum()) {
-            return $this->compileEnumString($reflectionClass, $transpiledTypes);
+            /** @var class-string<\UnitEnum|\BackedEnum> $enumClassName */
+            $enumClassName = $className;
+
+            return (new EnumTypeTranspiler($enumClassName))->transpile();
         }
 
         return $this->compileClassString($reflectionClass, $transpiledTypes);
-    }
-
-    /**
-     * @param  \Returnless\TypescriptGenerator\Reflection\ReflectionClass<object>  $reflectionClass
-     * @param  array<string, string>  $transpiledTypes
-     */
-    private function compileEnumString(ReflectionClass $reflectionClass, array $transpiledTypes): string
-    {
-        return sprintf('export enum %s {%s}', $reflectionClass->getShortName(), implode($transpiledTypes));
     }
 
     /**

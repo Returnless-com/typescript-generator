@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Tests\stubs\ArrayMethodStub;
+use Returnless\TypescriptGenerator\Tests\stubs\EnumMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\StringMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\VoidMethodStub;
 use Returnless\TypescriptGenerator\Tests\TestCase;
@@ -54,6 +55,16 @@ final class ReflectionClassAttributeTest extends TestCase
         $reflectedClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('voidMethodDocBlock'));
 
         self::assertInstanceOf(Void_::class, $reflectedClassAttribute->type());
+    }
+
+    #[Test]
+    public function it_can_reflect_enum_method_docblock(): void
+    {
+        $reflectionClass = new ReflectionClass(EnumMethodStub::class);
+
+        $reflectedClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('enumMethodDocBlock'));
+
+        self::assertInstanceOf(Object_::class, $reflectedClassAttribute->type());
     }
 
     #[Test]

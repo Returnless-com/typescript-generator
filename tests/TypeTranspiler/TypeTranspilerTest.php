@@ -9,6 +9,8 @@ use PHPUnit\Framework\Attributes\Test;
 use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
 use Returnless\TypescriptGenerator\Tests\stubs\ArrayMethodStub;
+use Returnless\TypescriptGenerator\Tests\stubs\BooleanMethodStub;
+use Returnless\TypescriptGenerator\Tests\stubs\EnumMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\StringMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\VoidMethodStub;
 use Returnless\TypescriptGenerator\Tests\TestCase;
@@ -40,6 +42,10 @@ final class TypeTranspilerTest extends TestCase
         return [
             [VoidMethodStub::class, 'voidMethodReturnType', 'unknown'],
             [VoidMethodStub::class, 'voidMethodDocBlock', 'unknown'],
+            [BooleanMethodStub::class, 'booleanMethodDocBlock', 'boolean'],
+            [BooleanMethodStub::class, 'booleanMethodDocBlock', 'boolean'],
+            [EnumMethodStub::class, 'enumMethodDocBlock', 'TestEnum'],
+            [EnumMethodStub::class, 'enumMethodDocBlock', 'TestEnum'],
             [StringMethodStub::class, 'stringMethodReturnType', 'string'],
             [StringMethodStub::class, 'stringMethodDocBlock', 'string'],
             [ArrayMethodStub::class, 'unknownArray', 'unknown[]'],
