@@ -44,6 +44,7 @@ readonly class EnumTypeTranspiler
             static function (array $carry, ReflectionEnumBackedCase $reflectionEnumCase) use ($reflectionEnum): array {
                 $value = $reflectionEnumCase->getBackingValue();
 
+                // If the backing type is a string, wrap the value in single quotes.
                 if ((string) $reflectionEnum->getBackingType() === 'string') {
                     $value = sprintf('\'%s\'', $value);
                 }

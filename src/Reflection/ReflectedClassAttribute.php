@@ -30,6 +30,7 @@ final readonly class ReflectedClassAttribute
             ReflectionTypeResolver::class,
         ];
 
+        // Loop through all the type resolvers and return the first one that resolves a type...
         foreach ($typeResolvers as $typeResolverClassName) {
             $typeResolver = new $typeResolverClassName($this->classAttribute);
 
@@ -40,6 +41,7 @@ final readonly class ReflectedClassAttribute
             }
         }
 
+        // ...or return an any type if no type was resolved.
         return TypescriptType::any();
     }
 }

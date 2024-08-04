@@ -114,6 +114,8 @@ final class TypeTranspiler
         /** @var class-string $fullyQualifiedStructuralElementName */
         $fullyQualifiedStructuralElementName = ltrim((string) $fullyQualifiedStructuralElement, '\\');
 
+        // We don't want to transpile any type that's not from our application.
+        // This is because we can't guarantee that the correct type is set or even exists.
         if (str_starts_with($fullyQualifiedStructuralElementName, '\\App')) {
             Stack::getInstance()->add($fullyQualifiedStructuralElementName);
         }
