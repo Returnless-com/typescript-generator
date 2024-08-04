@@ -50,11 +50,11 @@ final class TypeTranspilerTest extends TestCase
             [StringMethodStub::class, 'stringMethodDocBlock', 'string'],
             [ArrayMethodStub::class, 'unknownArray', 'unknown[]'],
             [ArrayMethodStub::class, 'recordArray', 'Record<number, string>'],
-            [ArrayMethodStub::class, 'arrayOfType', 'DummyClass[]'],
+            [ArrayMethodStub::class, 'arrayOfType', 'DummyStub[]'],
             [ArrayMethodStub::class, 'arrayShape', '{ label: string, value: number }'],
             [ArrayMethodStub::class, 'undefinedCollection', 'unknown[]'],
             [ArrayMethodStub::class, 'recordCollection', 'Record<number, string>'],
-            [ArrayMethodStub::class, 'recordCollectionOfType', 'Record<number, DummyClass>'],
+            [ArrayMethodStub::class, 'recordCollectionOfType', 'Record<number, DummyStub>'],
             [ArrayMethodStub::class, 'listOfString', 'string[]'],
         ];
     }
