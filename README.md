@@ -1,5 +1,7 @@
 # Typescript Generator
 
+This package allows you to generate typescript types from your PHP classes.
+
 ### Installation
 
 ```json
