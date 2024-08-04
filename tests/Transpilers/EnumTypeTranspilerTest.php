@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Returnless\TypescriptGenerator\Tests\Transpilers;
 
 use PHPUnit\Framework\Attributes\Test;
