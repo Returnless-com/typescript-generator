@@ -29,7 +29,7 @@ class DummyClass
     }
 }
 
-#[Returnless\TypescriptGenerator\Attributes\Typescript(DummyClass)]
+#[Returnless\TypescriptGenerator\Attributes\Typescript(DummyClass::class)]
 class MyController
 {
     // ....
