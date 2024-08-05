@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Returnless\TypescriptGenerator\Tests\TypeTranspiler;
+namespace Returnless\TypescriptGenerator\Tests\Transpilers;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
