@@ -6,8 +6,6 @@ namespace Returnless\TypescriptGenerator\Tests\stubs;
 
 use Illuminate\Support\Collection;
 
-final class DummyClass {}
-
 final class ArrayMethodStub
 {
     public function unknownArray(): array
@@ -26,11 +24,11 @@ final class ArrayMethodStub
     }
 
     /**
-     * @return \Tests\Unit\Infrastructure\InertiaTypescriptGenerator\stubs\DummyClass[]
+     * @return \Returnless\TypescriptGenerator\Tests\stubs\DummyStub[]
      */
     public function arrayOfType(): array
     {
-        // This should return `DummyClass[]` in the generated typescript
+        // This should return `DummyStub[]` in the generated typescript
         return [];
     }
 
@@ -62,7 +60,7 @@ final class ArrayMethodStub
     }
 
     /**
-     * @return \Illuminate\Support\Collection<int, \Tests\Unit\Infrastructure\InertiaTypescriptGenerator\stubs\DummyClass>
+     * @return \Illuminate\Support\Collection<int, \Returnless\TypescriptGenerator\Tests\stubs\DummyStub>
      */
     public function recordCollectionOfType(): Collection
     {
@@ -77,5 +75,13 @@ final class ArrayMethodStub
     {
         // This should return `string[]` in the generated typescript
         return ['test'];
+    }
+
+    /**
+     * @return list<\Illuminate\Support\Collection<int, \Returnless\TypescriptGenerator\Tests\stubs\DummyStub>>
+     */
+    public function listOfNestedType(): array
+    {
+        return [];
     }
 }

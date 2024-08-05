@@ -55,7 +55,8 @@ final class Stack
                 $publicClassAttribute->type(),
             );
 
-            if (is_string($fullyQualifiedStructuralElementName)) {
+            // If the attribute is an object from the App namespace, we add it to the stack.
+            if (is_string($fullyQualifiedStructuralElementName) && str_starts_with($fullyQualifiedStructuralElementName, 'App\\')) {
                 $this->add($fullyQualifiedStructuralElementName);
             }
         }

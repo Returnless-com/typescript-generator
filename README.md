@@ -1,5 +1,7 @@
 # Typescript Generator
 
+This package allows you to generate typescript types from your PHP classes.
+
 ### Installation
 
 ```json
@@ -29,7 +31,7 @@ class DummyClass
     }
 }
 
-#[Returnless\TypescriptGenerator\Attributes\Typescript(DummyClass)]
+#[Returnless\TypescriptGenerator\Attributes\Typescript(DummyClass::class)]
 class MyController
 {
     // ....

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator\Transpilers;
 
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\List_;
@@ -18,7 +17,6 @@ use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
-use Returnless\TypescriptGenerator\Stack;
 use Returnless\TypescriptGenerator\Types\TypeInspector;
 use Returnless\TypescriptGenerator\Types\TypescriptType;
 
@@ -103,22 +101,7 @@ final class TypeTranspiler
             return $this->arrayOf(self::TYPE_UNKNOWN);
         }
 
-        return $this->resolveFullyQualifiedStructuralElement($fullyQualifiedStructuralElementName);
-    }
-
-    /**
-     * @throws \ReflectionException
-     */
-    private function resolveFullyQualifiedStructuralElement(Fqsen $fullyQualifiedStructuralElement): string
-    {
-        /** @var class-string $fullyQualifiedStructuralElementName */
-        $fullyQualifiedStructuralElementName = ltrim((string) $fullyQualifiedStructuralElement, '\\');
-
-        if (str_starts_with($fullyQualifiedStructuralElementName, '\\App')) {
-            Stack::getInstance()->add($fullyQualifiedStructuralElementName);
-        }
-
-        return $fullyQualifiedStructuralElement->getName();
+        return $fullyQualifiedStructuralElementName->getName();
     }
 
     /**
