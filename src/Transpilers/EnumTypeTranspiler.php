@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator\Transpilers;
 
+use InvalidArgumentException;
 use ReflectionEnum;
 use ReflectionEnumBackedCase;
-use ReflectionEnumUnitCase;
 
 readonly class EnumTypeTranspiler
 {
@@ -28,7 +28,7 @@ readonly class EnumTypeTranspiler
             ? $this->transpileBackedEnum($reflectionEnum)
             : $this->transpileUnitEnum($reflectionEnum);
 
-        return sprintf('export enum %s = %s', $reflectionEnum->getShortName(), implode('|', $cases));
+        return sprintf('export type %s = %s', $reflectionEnum->getShortName(), implode('|', $cases));
     }
 
     /**
@@ -60,11 +60,8 @@ readonly class EnumTypeTranspiler
      */
     private function transpileUnitEnum(ReflectionEnum $reflectionEnum): array
     {
-        return array_map(
-            static function (ReflectionEnumUnitCase $reflectionEnumUnitCase): string {
-                return $reflectionEnumUnitCase->getName();
-            },
-            $reflectionEnum->getCases(),
+        throw new InvalidArgumentException(
+            sprintf('Non-backed enums are not supported for enum `%s`.', class_basename($reflectionEnum->getName())),
         );
     }
 }
