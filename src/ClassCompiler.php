@@ -69,7 +69,7 @@ final class ClassCompiler
     private function compileClassString(ReflectionClass $reflectionClass, array $transpiledTypes): string
     {
         return sprintf(
-            'export type %s = {%s}',
+            'export type %s = {%s};',
             $reflectionClass->getShortName(),
             implode(' ', Arr::mapWithKeys($transpiledTypes, static fn ($type, $name) => [
                 $name => sprintf('%s: %s;', $name, $type),
