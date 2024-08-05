@@ -76,4 +76,12 @@ final class ArrayMethodStub
         // This should return `string[]` in the generated typescript
         return ['test'];
     }
+
+    /**
+     * @return list<\Illuminate\Support\Collection<int, \Returnless\TypescriptGenerator\Tests\stubs\DummyStub>>
+     */
+    public function listOfNestedType(): array
+    {
+        return [];
+    }
 }
