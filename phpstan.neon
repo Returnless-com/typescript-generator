@@ -12,6 +12,3 @@ parameters:
 
     excludePaths:
         - ./*/*/FileToBeExcluded.php
-
-    checkMissingIterableValueType: true
-    disableSchemaScan: true
