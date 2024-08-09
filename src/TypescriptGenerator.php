@@ -58,9 +58,9 @@ final readonly class TypescriptGenerator
         if (str_contains($resourcePath, '::')) {
             [$module, $path] = explode('::', $resourcePath);
 
-            $path = sprintf('%s/%s/%s', $module, $pathPath, $path);
+            $path = $module . '/' . $pathPath . '/' . $path;
         } else {
-            $path = sprintf('%s/%s', $pathPath, $resourcePath);
+            $path = $pathPath . '/' . $resourcePath;
         }
 
         $path = $this->outputPath . '/' . $path;
