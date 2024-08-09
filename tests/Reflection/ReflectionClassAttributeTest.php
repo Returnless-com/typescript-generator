@@ -12,6 +12,7 @@ use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
@@ -85,6 +86,20 @@ final class ReflectionClassAttributeTest extends TestCase
         $reflectedClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('stringMethodDocBlock'));
 
         self::assertInstanceOf(String_::class, $reflectedClassAttribute->type());
+    }
+
+    #[Test]
+    public function it_can_reflect_nullable_strings(): void
+    {
+        $reflectionClass = new ReflectionClass(StringMethodStub::class);
+
+        $reflectedClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('nullableString'));
+
+        /** @var \phpDocumentor\Reflection\Types\Nullable $type */
+        $type = $reflectedClassAttribute->type();
+
+        self::assertInstanceOf(Nullable::class, $type);
+        self::assertInstanceOf(String_::class, $type->getActualType());
     }
 
     #[Test]

@@ -18,4 +18,9 @@ final class StringMethodStub
     {
         return 'test';
     }
+
+    public function nullableString(): ?string
+    {
+        return null;
+    }
 }
