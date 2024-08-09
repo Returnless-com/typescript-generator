@@ -7,6 +7,7 @@ namespace Returnless\TypescriptGenerator\TypeResolvers;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\ContextFactory;
 use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -44,7 +45,11 @@ final class ReflectionTypeResolver extends AbstractTypeResolver
     private function resolveNamedType(ReflectionNamedType $reflectionType, TypeResolver $typeResolver): Type
     {
         return $this->resolveNullType(
-            $typeResolver->resolve($reflectionType->getName()),
+            $typeResolver->resolve(
+                $reflectionType->getName(),
+                (new ContextFactory)->createFromReflector($this->reflectedClassAttribute),
+            ),
+            $reflectionType,
         );
     }
 

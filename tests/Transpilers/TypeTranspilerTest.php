@@ -48,6 +48,7 @@ final class TypeTranspilerTest extends TestCase
             [EnumMethodStub::class, 'enumMethodDocBlock', 'TestEnum'],
             [StringMethodStub::class, 'stringMethodReturnType', 'string'],
             [StringMethodStub::class, 'stringMethodDocBlock', 'string'],
+            [StringMethodStub::class, 'nullableString', 'string | null'],
             [ArrayMethodStub::class, 'unknownArray', 'unknown[]'],
             [ArrayMethodStub::class, 'recordArray', 'Record<number, string>'],
             [ArrayMethodStub::class, 'arrayOfType', 'DummyStub[]'],

@@ -15,6 +15,7 @@ use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use Returnless\TypescriptGenerator\Types\TypeInspector;
@@ -38,6 +39,7 @@ final class TypeTranspiler
             $type instanceof Collection => $this->resolveCollectionType($type),
             $type instanceof Compound => $this->resolveCompoundType($type),
             $type instanceof ArrayShape => $this->resolveArrayShapeType($type),
+            $type instanceof Nullable => $this->resolveNullableType($type),
             $type instanceof TypeScriptType => (string) $type,
             default => null,
         };
@@ -102,6 +104,14 @@ final class TypeTranspiler
         }
 
         return $fullyQualifiedStructuralElementName->getName();
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    private function resolveNullableType(Nullable $type): string
+    {
+        return "{$this->transpile($type->getActualType())} | null";
     }
 
     /**
