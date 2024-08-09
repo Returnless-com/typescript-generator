@@ -53,12 +53,14 @@ final readonly class TypescriptGenerator
     {
         $resourcePath = $this->getPath($typescriptAttribute);
 
+        $pathPath = config('typescript-generator.page_path');
+
         if (str_contains($resourcePath, '::')) {
             [$module, $path] = explode('::', $resourcePath);
 
-            $path = sprintf('%s/%s/%s', $module, config('typescript-generator.page_path'), $path);
+            $path = sprintf('%s/%s/%s', $module, $pathPath, $path);
         } else {
-            $path = sprintf('%s/%s', config('typescript-generator.page_path'), $resourcePath);
+            $path = sprintf('%s/%s', $pathPath, $resourcePath);
         }
 
         $path = $this->outputPath . '/' . $path;
