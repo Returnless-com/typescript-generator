@@ -57,6 +57,7 @@ final class TypeTranspilerTest extends TestCase
             [ArrayMethodStub::class, 'recordCollection', 'Record<number, string>'],
             [ArrayMethodStub::class, 'recordCollectionOfType', 'Record<number, DummyStub>'],
             [ArrayMethodStub::class, 'listOfString', 'string[]'],
+            [ArrayMethodStub::class, 'listOfNestedType', 'Record<number, DummyStub>[]'],
         ];
     }
 }

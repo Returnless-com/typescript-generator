@@ -51,7 +51,19 @@ final readonly class TypescriptGenerator
      */
     private function writeStackToFile(string $typescriptAttribute, string $generatedClassTypes): void
     {
-        $path = $this->outputPath . '/' . $this->getPath($typescriptAttribute);
+        $resourcePath = $this->getPath($typescriptAttribute);
+
+        $pathPath = config('typescript-generator.page_path');
+
+        if (str_contains($resourcePath, '::')) {
+            [$module, $path] = explode('::', $resourcePath);
+
+            $path = $module . '/' . $pathPath . '/' . $path;
+        } else {
+            $path = $pathPath . '/' . $resourcePath;
+        }
+
+        $path = $this->outputPath . '/' . $path;
 
         File::ensureDirectoryExists(dirname($path));
         File::put($path, $generatedClassTypes);

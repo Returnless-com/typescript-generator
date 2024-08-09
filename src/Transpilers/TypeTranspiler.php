@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator\Transpilers;
 
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\List_;
@@ -19,7 +18,6 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
-use Returnless\TypescriptGenerator\Stack;
 use Returnless\TypescriptGenerator\Types\TypeInspector;
 use Returnless\TypescriptGenerator\Types\TypescriptType;
 
@@ -105,7 +103,7 @@ final class TypeTranspiler
             return $this->arrayOf(self::TYPE_UNKNOWN);
         }
 
-        return $this->resolveFullyQualifiedStructuralElement($fullyQualifiedStructuralElementName);
+        return $fullyQualifiedStructuralElementName->getName();
     }
 
     /**
@@ -114,23 +112,6 @@ final class TypeTranspiler
     private function resolveNullableType(Nullable $type): string
     {
         return "{$this->transpile($type->getActualType())} | null";
-    }
-
-    /**
-     * @throws \ReflectionException
-     */
-    private function resolveFullyQualifiedStructuralElement(Fqsen $fullyQualifiedStructuralElement): string
-    {
-        /** @var class-string $fullyQualifiedStructuralElementName */
-        $fullyQualifiedStructuralElementName = ltrim((string) $fullyQualifiedStructuralElement, '\\');
-
-        // We don't want to transpile any type that's not from our application.
-        // This is because we can't guarantee that the correct type is set or even exists.
-        if (str_starts_with($fullyQualifiedStructuralElementName, '\\App')) {
-            Stack::getInstance()->add($fullyQualifiedStructuralElementName);
-        }
-
-        return $fullyQualifiedStructuralElement->getName();
     }
 
     /**

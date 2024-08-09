@@ -17,14 +17,16 @@ final class EnumTypeTranspilerTest extends TestCase
     {
         $enumTypeTranspiler = new EnumTypeTranspiler(BackedEnumStub::class);
 
-        self::assertSame('export enum BackedEnumStub = \'foo\'|\'bar\'|\'baz\'', $enumTypeTranspiler->transpile());
+        self::assertSame('export type BackedEnumStub = \'foo\'|\'bar\'|\'baz\'', $enumTypeTranspiler->transpile());
     }
 
     #[Test]
     public function it_can_transpile_a_non_backed_enum(): void
     {
+        $this->expectExceptionMessage('Non-backed enums are not supported for enum `NonBackedEnumStub`.');
+
         $enumTypeTranspiler = new EnumTypeTranspiler(NonBackedEnumStub::class);
 
-        self::assertSame('export enum NonBackedEnumStub = FOO|BAR|BAZ', $enumTypeTranspiler->transpile());
+        $enumTypeTranspiler->transpile();
     }
 }
