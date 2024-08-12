@@ -99,10 +99,20 @@ final class TypeTranspiler
     {
         $fullyQualifiedStructuralElementName = $type->getFqsen();
 
+        /** @var class-string $fullyQualifiedStructuralElementNameString */
+        $fullyQualifiedStructuralElementNameString = (string) $type->getFqsen();
+
         // If the fully qualified name is null, or the class-name is Collection,
         // we have to assume it's an array of unknown objects.
         if ($fullyQualifiedStructuralElementName === null || $fullyQualifiedStructuralElementName->getName() === 'Collection') {
             return $this->arrayOf(self::TYPE_UNKNOWN);
+        }
+
+        $reflectionClass = new ReflectionClass($fullyQualifiedStructuralElementNameString);
+
+        // If the class implements the Stringable interface, we can assume it's a string.
+        if ($reflectionClass->implementsInterface(Stringable::class)) {
+            return 'string';
         }
 
         return $fullyQualifiedStructuralElementName->getName();

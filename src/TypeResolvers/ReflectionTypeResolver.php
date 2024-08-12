@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator\TypeResolvers;
 
+use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\ContextFactory;
+use ReflectionClass;
+use ReflectionException;
 use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -70,22 +73,17 @@ final class ReflectionTypeResolver extends AbstractTypeResolver
         return $this->resolveNullType($compoundType);
     }
 
-    private function resolveUnionType(ReflectionUnionType $reflectionType, TypeResolver $typeResolver): Type
+    private function resolveName(ReflectionNamedType $reflectionType): string
     {
-        $types = array_filter(
-            $reflectionType->getTypes(),
-            static fn (ReflectionNamedType|ReflectionIntersectionType $reflectionType) => $reflectionType instanceof ReflectionNamedType,
-        );
+        try {
+            /** @var class-string $className */
+            $className = $reflectionType->getName();
 
-        $compoundType = new Compound(array_map(
-            static function (ReflectionIntersectionType|ReflectionNamedType $reflectionType) use ($typeResolver) {
-                return $typeResolver->resolve(
-                    $reflectionType->getName(),
-                );
-            },
-            $types,
-        ));
+            new ReflectionClass($className);
 
-        return $this->resolveNullType($compoundType);
+            return Str::start($reflectionType->getName(), '\\');
+        } catch (ReflectionException) {
+            return $reflectionType->getName();
+        }
     }
 }

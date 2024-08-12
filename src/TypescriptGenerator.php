@@ -4,68 +4,76 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator;
 
-use Generator;
-use Illuminate\Support\Facades\File;
-use Returnless\TypescriptGenerator\Iterators\AbstractAttributeIterator;
+use Illuminate\Support\Arr;
+use phpDocumentor\Reflection\Type;
+use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
+use Returnless\TypescriptGenerator\Transpilers\EnumTypeTranspiler;
+use Returnless\TypescriptGenerator\Transpilers\TypeTranspiler;
 
-final readonly class TypescriptGenerator
+final class TypescriptGenerator
 {
-    public function __construct(
-        private AbstractAttributeIterator $attributeIterator,
-        private string $outputPath,
-    ) {}
-
     /**
-     * @return \Generator<class-string>
+     * @param  class-string  $className
      *
      * @throws \ReflectionException
      */
-    public function generate(): Generator
+    public function generate(string $className): string
     {
-        $classCompiler = new ClassCompiler;
+        Stack::getInstance()->reset();
+        Stack::getInstance()->add($className);
 
-        foreach ($this->attributeIterator as $typescriptAttribute) {
-            $this->writeStackToFile($typescriptAttribute, $classCompiler->compile($typescriptAttribute));
+        $generatedClassTypes = array_map(function (string $className) {
+            /** @var class-string $className */
+            return $this->generateClassTypes($className);
+        }, Stack::getInstance()->getStack());
 
-            yield $typescriptAttribute;
-        }
+        return implode("\n", $generatedClassTypes);
     }
 
     /**
-     * @param  class-string  $typescriptAttribute
+     * @param  class-string  $className
      *
      * @throws \ReflectionException
      */
-    private function getPath(string $typescriptAttribute): string
+    private function generateClassTypes(string $className): string
     {
-        $reflectionClass = new ReflectionClass($typescriptAttribute);
+        $reflectionClass = new ReflectionClass($className);
 
-        return $reflectionClass->getProperty('viewPath')->getDefaultValue() . '/types.ts';
+        /** @var array<string, \phpDocumentor\Reflection\Type> $types */
+        $types = Arr::mapWithKeys(
+            $reflectionClass->getPublicClassAttributes(),
+            static fn (ReflectedClassAttribute $reflectedClassAttribute) => [
+                $reflectedClassAttribute->name() => $reflectedClassAttribute->type(),
+            ],
+        );
+
+        $transpiledTypes = Arr::mapWithKeys($types, static fn (Type $type, string $name) => [
+            $name => (new TypeTranspiler)->transpile($type),
+        ]);
+
+        if ($reflectionClass->isEnum()) {
+            /** @var class-string<\UnitEnum> $enumClassName */
+            $enumClassName = $className;
+
+            return (new EnumTypeTranspiler($enumClassName))->transpile();
+        }
+
+        return $this->compileClassString($reflectionClass, $transpiledTypes);
     }
 
     /**
-     * @param  class-string  $typescriptAttribute
-     *
-     * @throws \ReflectionException
+     * @param  \Returnless\TypescriptGenerator\Reflection\ReflectionClass<object>  $reflectionClass
+     * @param  array<string, string>  $transpiledTypes
      */
-    private function writeStackToFile(string $typescriptAttribute, string $generatedClassTypes): void
+    private function compileClassString(ReflectionClass $reflectionClass, array $transpiledTypes): string
     {
-        $resourcePath = $this->getPath($typescriptAttribute);
-
-        $pathPath = config('typescript-generator.page_path');
-
-        if (str_contains($resourcePath, '::')) {
-            [$module, $path] = explode('::', $resourcePath);
-
-            $path = $module . '/' . $pathPath . '/' . $path;
-        } else {
-            $path = $pathPath . '/' . $resourcePath;
-        }
-
-        $path = $this->outputPath . '/' . $path;
-
-        File::ensureDirectoryExists(dirname($path));
-        File::put($path, $generatedClassTypes);
+        return sprintf(
+            'export type %s = {%s};',
+            $reflectionClass->getShortName(),
+            implode(' ', Arr::mapWithKeys($transpiledTypes, static fn ($type, $name) => [
+                $name => sprintf('%s: %s;', $name, $type),
+            ])),
+        );
     }
 }

@@ -20,32 +20,10 @@ This package allows you to generate typescript types from your PHP classes.
 
 ## Usage
 
-### Using attributes
-
-```php
-class DummyClass
-{
-    public function myMethod(): string
-    {
-        // ...
-    }
-}
-
-#[Returnless\TypescriptGenerator\Attributes\Typescript(DummyClass::class)]
-class MyController
-{
-    // ....
-}
-```
-
-```shell
-php artisan typescript:generate
-```
-
 ### Running the compiler directly
 
 ```php
-$classCompiler = new \Returnless\TypescriptGenerator\ClassCompiler();
+$typescriptGenerator = new \Returnless\TypescriptGenerator\TypescriptGenerator();
 
-$output = $classCompiler->compile('...class-string...');
+$output = $typescriptGenerator->generate('...class-string...');
 ```
