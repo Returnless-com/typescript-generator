@@ -46,11 +46,28 @@ final class ReflectionTypeResolver extends AbstractTypeResolver
     {
         return $this->resolveNullType(
             $typeResolver->resolve(
-                $reflectionType->getName(),
+                $this->resolveName($reflectionType),
                 (new ContextFactory)->createFromReflector($this->reflectedClassAttribute),
             ),
             $reflectionType,
         );
+    }
+
+    private function resolveUnionType(ReflectionUnionType $reflectionType, TypeResolver $typeResolver): Type
+    {
+        $types = array_filter(
+            $reflectionType->getTypes(),
+            static fn (ReflectionNamedType|ReflectionIntersectionType $reflectionType) => $reflectionType instanceof ReflectionNamedType,
+        );
+
+        $compoundType = new Compound(array_map(
+            function (ReflectionIntersectionType|ReflectionNamedType $reflectionType) use ($typeResolver) {
+                return $typeResolver->resolve($this->resolveName($reflectionType));
+            },
+            $types,
+        ));
+
+        return $this->resolveNullType($compoundType);
     }
 
     private function resolveUnionType(ReflectionUnionType $reflectionType, TypeResolver $typeResolver): Type

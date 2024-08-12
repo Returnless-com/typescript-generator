@@ -18,8 +18,10 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
+use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
 use Returnless\TypescriptGenerator\Types\TypeInspector;
 use Returnless\TypescriptGenerator\Types\TypescriptType;
+use Stringable;
 
 final class TypeTranspiler
 {
