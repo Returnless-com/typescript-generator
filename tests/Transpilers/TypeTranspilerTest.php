@@ -11,6 +11,7 @@ use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
 use Returnless\TypescriptGenerator\Tests\stubs\ArrayMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\BooleanMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\EnumMethodStub;
+use Returnless\TypescriptGenerator\Tests\stubs\NumberStub;
 use Returnless\TypescriptGenerator\Tests\stubs\StringMethodStub;
 use Returnless\TypescriptGenerator\Tests\stubs\VoidMethodStub;
 use Returnless\TypescriptGenerator\Tests\TestCase;
@@ -48,6 +49,7 @@ final class TypeTranspilerTest extends TestCase
             [EnumMethodStub::class, 'enumMethodDocBlock', 'TestEnum'],
             [StringMethodStub::class, 'stringMethodReturnType', 'string'],
             [StringMethodStub::class, 'stringMethodDocBlock', 'string'],
+            [StringMethodStub::class, 'stringableClass', 'string'],
             [StringMethodStub::class, 'nullableString', 'string | null'],
             [ArrayMethodStub::class, 'unknownArray', 'unknown[]'],
             [ArrayMethodStub::class, 'recordArray', 'Record<number, string>'],
@@ -58,6 +60,8 @@ final class TypeTranspilerTest extends TestCase
             [ArrayMethodStub::class, 'recordCollectionOfType', 'Record<number, DummyStub>'],
             [ArrayMethodStub::class, 'listOfString', 'string[]'],
             [ArrayMethodStub::class, 'listOfNestedType', 'Record<number, DummyStub>[]'],
+            [NumberStub::class, 'intMethod', 'number'],
+            [NumberStub::class, 'floatMethod', 'number'],
         ];
     }
 }

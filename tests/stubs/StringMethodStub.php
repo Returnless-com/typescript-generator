@@ -23,4 +23,9 @@ final class StringMethodStub
     {
         return null;
     }
+
+    public function stringableClass(): StringableClass
+    {
+        return new StringableClass;
+    }
 }
