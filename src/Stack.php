@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Returnless\TypescriptGenerator;
 
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Nullable;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
+use Stringable;
 
 final class Stack
 {
@@ -56,7 +58,7 @@ final class Stack
             );
 
             // If the attribute is an object from the App namespace, we add it to the stack.
-            if (is_string($fullyQualifiedStructuralElementName) && str_starts_with($fullyQualifiedStructuralElementName, 'App\\')) {
+            if ($this->shouldAddToStack($fullyQualifiedStructuralElementName)) {
                 $this->add($fullyQualifiedStructuralElementName);
             }
         }
@@ -69,8 +71,29 @@ final class Stack
         $this->stack = [];
     }
 
+    /**
+     * @param  class-string|null  $fullyQualifiedStructuralElementName
+     *
+     * @throws \ReflectionException
+     */
+    private function shouldAddToStack(?string $fullyQualifiedStructuralElementName): bool
+    {
+        if ($fullyQualifiedStructuralElementName === null) {
+            return false;
+        }
+
+        $reflectionClass = new ReflectionClass($fullyQualifiedStructuralElementName);
+
+        return ! $reflectionClass->implementsInterface(Stringable::class)
+            && str_starts_with($fullyQualifiedStructuralElementName, 'App\\');
+    }
+
     private function getFullyQualifiedStructuralElementName(Type $type): ?string
     {
+        if ($type instanceof Nullable) {
+            $type = $type->getActualType();
+        }
+
         if (method_exists($type, 'getValueType')) {
             /** @var \phpDocumentor\Reflection\Types\AbstractList|\phpDocumentor\Reflection\Types\Expression $valueType */
             $valueType = $type->getValueType();

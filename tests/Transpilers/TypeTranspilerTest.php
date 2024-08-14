@@ -35,6 +35,22 @@ final class TypeTranspilerTest extends TestCase
         );
     }
 
+    #[Test]
+    #[DataProvider('providePropertyStubs')]
+    public function it_correctly_transpiles_property_types(string $stubClass, string $method, string $expected): void
+    {
+        $reflectionClass = new ReflectionClass($stubClass);
+
+        $reflectedProperty = new ReflectedClassAttribute($reflectionClass->getProperty($method));
+
+        $typeTranspiler = new TypeTranspiler;
+
+        self::assertSame(
+            $expected,
+            $typeTranspiler->transpile($reflectedProperty->type()),
+        );
+    }
+
     /**
      * @return array[string, string, string]
      */
@@ -62,6 +78,13 @@ final class TypeTranspilerTest extends TestCase
             [ArrayMethodStub::class, 'listOfNestedType', 'Record<number, DummyStub>[]'],
             [NumberStub::class, 'intMethod', 'number'],
             [NumberStub::class, 'floatMethod', 'number'],
+        ];
+    }
+
+    public static function providePropertyStubs(): array
+    {
+        return [
+            [StringMethodStub::class, 'stringProperty', 'string'],
         ];
     }
 }
