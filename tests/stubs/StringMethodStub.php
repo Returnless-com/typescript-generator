@@ -6,6 +6,8 @@ namespace Returnless\TypescriptGenerator\Tests\stubs;
 
 final class StringMethodStub
 {
+    public string $stringProperty;
+
     public function stringMethodReturnType(): string
     {
         return 'test';
