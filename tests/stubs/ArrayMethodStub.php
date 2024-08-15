@@ -84,4 +84,12 @@ final class ArrayMethodStub
     {
         return [];
     }
+
+    /**
+     * @return \Illuminate\Support\Collection<\Returnless\TypescriptGenerator\Tests\stubs\DummyStub>
+     */
+    public function untypedKeyOfType(): array
+    {
+        return [];
+    }
 }

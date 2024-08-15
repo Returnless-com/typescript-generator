@@ -150,7 +150,14 @@ final class TypeTranspiler
             iterator_to_array($type->getIterator()),
         );
 
-        return implode(' & ', array_unique($transformed));
+        $reflectionClass = new ReflectionClass(get_parent_class($type));
+
+        $reflectionProperty = $reflectionClass->getProperty('token');
+
+        /** @var string $compoundToken */
+        $compoundToken = $reflectionProperty->getValue($type);
+
+        return implode(sprintf(' %s ', $compoundToken), array_unique($transformed));
     }
 
     private function arrayOf(string $type): string
