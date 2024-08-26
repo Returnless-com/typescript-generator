@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Returnless\TypescriptGenerator\Tests\stubs;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -17,4 +19,3 @@ final class DummyArrayable implements Arrayable
         return [];
     }
 }
-

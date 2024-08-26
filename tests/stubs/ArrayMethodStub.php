@@ -118,8 +118,5 @@ final class ArrayMethodStub
         return [];
     }
 
-    public function arrayOfArrayable(): DummyArrayable
-    {
-
-    }
+    public function arrayOfArrayable(): DummyArrayable {}
 }
