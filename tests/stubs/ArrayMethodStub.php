@@ -60,6 +60,22 @@ final class ArrayMethodStub
     }
 
     /**
+     * @return \Illuminate\Support\Collection<array-key, string>
+     */
+    public function listCollection(): Collection
+    {
+        return Collection::make();
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<array-key, \Returnless\TypescriptGenerator\Tests\stubs\DummyStub>
+     */
+    public function listCollectionOfType(): Collection
+    {
+        return Collection::make();
+    }
+
+    /**
      * @return \Illuminate\Support\Collection<int, \Returnless\TypescriptGenerator\Tests\stubs\DummyStub>
      */
     public function recordCollectionOfType(): Collection

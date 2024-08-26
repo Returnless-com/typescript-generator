@@ -73,6 +73,8 @@ final class TypeTranspilerTest extends TestCase
             [ArrayMethodStub::class, 'arrayShape', '{ label: string, value: number }'],
             [ArrayMethodStub::class, 'undefinedCollection', 'unknown[]'],
             [ArrayMethodStub::class, 'recordCollection', 'Record<number, string>'],
+            [ArrayMethodStub::class, 'listCollection', 'string[]'],
+            [ArrayMethodStub::class, 'listCollectionOfType', 'DummyStub[]'],
             [ArrayMethodStub::class, 'recordCollectionOfType', 'Record<number, DummyStub>'],
             [ArrayMethodStub::class, 'listOfString', 'string[]'],
             [ArrayMethodStub::class, 'listOfNestedType', 'Record<number, DummyStub>[]'],

@@ -10,6 +10,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
@@ -134,6 +135,10 @@ final class TypeTranspiler
         $valueType = $type->getValueType();
 
         if (! $valueType instanceof Object_ || ! $type->getKeyType() instanceof Object_) {
+            if ($type->getKeyType() instanceof ArrayKey) {
+                return $this->arrayOf($this->transpile($valueType));
+            }
+
             return $this->resolveRecordType($type);
         }
 
