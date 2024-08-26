@@ -33,6 +33,15 @@ final class ArrayMethodStub
     }
 
     /**
+     * @return int[]
+     */
+    public function arrayOfNativeType(): array
+    {
+        // This should return `DummyStub[]` in the generated typescript
+        return [];
+    }
+
+    /**
      * @return array{label: string, value: int}
      */
     public function arrayShape(): array
@@ -107,5 +116,10 @@ final class ArrayMethodStub
     public function untypedKeyOfType(): array
     {
         return [];
+    }
+
+    public function arrayOfArrayable(): DummyArrayable
+    {
+
     }
 }

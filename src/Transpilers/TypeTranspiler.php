@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Returnless\TypescriptGenerator\Transpilers;
 
+use Illuminate\Contracts\Support\Arrayable;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\List_;
@@ -16,9 +17,11 @@ use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
+use Returnless\TypescriptGenerator\Reflection\ReflectedClassAttribute;
 use Returnless\TypescriptGenerator\Reflection\ReflectionClass;
 use Returnless\TypescriptGenerator\Types\TypeInspector;
 use Returnless\TypescriptGenerator\Types\TypescriptType;
@@ -36,6 +39,7 @@ final class TypeTranspiler
         $result = match (true) {
             $type instanceof String_ => 'string',
             $type instanceof Boolean => 'boolean',
+            $type instanceof Null_ => 'null',
             $type instanceof Integer, $type instanceof Float_ => 'number',
             $type instanceof Array_ => $this->resolveArrayType($type),
             $type instanceof Object_ => $this->resolveObjectType($type),
@@ -57,15 +61,11 @@ final class TypeTranspiler
     {
         $typeInspector = new TypeInspector($type);
 
-        if ($type instanceof List_ || $type->getValueType() instanceof Object_) {
+        if ($type instanceof List_ || $typeInspector->keyType() === null) {
             return $this->arrayOf($this->transpile($type->getValueType()));
         }
 
-        if ($typeInspector->keyType() !== null && $typeInspector->defaultKeyType() instanceof Compound) {
-            return $this->resolveRecordType($type);
-        }
-
-        return $this->arrayOf(self::TYPE_UNKNOWN);
+        return $this->resolveRecordType($type);
     }
 
     /**
@@ -114,6 +114,12 @@ final class TypeTranspiler
         // If the class implements the Stringable interface, we can assume it's a string.
         if ($reflectionClass->implementsInterface(Stringable::class)) {
             return 'string';
+        }
+
+        if ($reflectionClass->implementsInterface(Arrayable::class)) {
+            $reflectionClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('toArray'));
+
+            return $this->transpile($reflectionClassAttribute->type());
         }
 
         return $fullyQualifiedStructuralElementName->getName();
