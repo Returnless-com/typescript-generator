@@ -86,7 +86,17 @@ final class TypeTranspiler
     private function resolveArrayShapeType(ArrayShape $type): string
     {
         $arrayShapeItems = array_map(
-            fn (ArrayShapeItem $arrayShapeItem) => $arrayShapeItem->getKey() . ': ' . $this->transpile($arrayShapeItem->getValue()),
+            function (ArrayShapeItem $arrayShapeItem): string {
+                $key = $arrayShapeItem->getKey();
+                $value = $this->transpile($arrayShapeItem->getValue());
+
+                if ($arrayShapeItem->isOptional()) {
+                    $key .= '?';
+                    $value .= ' | undefined';
+                }
+
+                return $key . ': ' . $value;
+            },
             $type->getItems(),
         );
 

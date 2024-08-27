@@ -42,7 +42,7 @@ final class ArrayMethodStub
     }
 
     /**
-     * @return array{label: string, value: int}
+     * @return array{label: string, value?: int}
      */
     public function arrayShape(): array
     {
