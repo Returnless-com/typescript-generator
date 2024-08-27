@@ -116,7 +116,8 @@ final class TypeTranspiler
             return 'string';
         }
 
-        if ($reflectionClass->implementsInterface(Arrayable::class)) {
+        // If the class directly implements the Arrayable interface, we can assume it's an array.
+        if (key(class_implements($reflectionClass->getName())) === Arrayable::class) {
             $reflectionClassAttribute = new ReflectedClassAttribute($reflectionClass->getMethod('toArray'));
 
             return $this->transpile($reflectionClassAttribute->type());
