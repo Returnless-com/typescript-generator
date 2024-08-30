@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Returnless\TypescriptGenerator\Types;
 
 use phpDocumentor\Reflection\Type;
-use RuntimeException;
 use Spatie\Invade\Invader;
-use Spatie\Invade\StaticInvader;
 
 final class TypeInspector
 {
@@ -17,10 +15,6 @@ final class TypeInspector
     public function __construct(Type $type)
     {
         $invader = invade($type);
-
-        if ($invader instanceof StaticInvader) {
-            throw new RuntimeException('Cannot inspect static invader');
-        }
 
         $this->invader = $invader;
     }
